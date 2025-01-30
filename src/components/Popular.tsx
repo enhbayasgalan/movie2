@@ -1,41 +1,35 @@
-import { title } from "process";
 import { useEffect } from "react";
 import { useState } from "react";
 
-interface e {
-  poster_path:string
-  vote_average:number
-  original_title:string
+interface en {
+    poster_path: string
+    vote_average: number
+    original_title: string
 }
-type props ={
-  name:string,
-  title:string
-}
-export const Upcoming = (props:props) => {
-    const [movie, setMovies] = useState<e[]>([]);
-    
-      const MovieData = async () => {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${props.title}?language=en-US&page=1&api_key=db430a8098715f8fab36009f57dff9fb`
-        );
-        const result = await response.json();
-        const movie = result.results;
-        setMovies(movie);
-      };
-    
-      useEffect(() => {
-        MovieData();
-      }, []);
-    
-      console.log(movie);
+
+export const Popular = () => {
+    const [movie, setMovies] = useState<en[]>([]);
+        
+          const MovieData = async () => {
+            const response = await fetch(
+              "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&api_key=db430a8098715f8fab36009f57dff9fb"
+            );
+            const result = await response.json();
+            const movie = result.results;
+            setMovies(movie);
+          };
+        
+          useEffect(() => {
+            MovieData();
+          }, []);
+        
+          console.log(movie);
     return(
-      <div>
-      <section className="page-primary py-8 lg:py-13 space-y-8">
-      <div className="w-[1280px] flex flex-col justify-center   justify-between ">
+        <div className="w-[1280px] flex flex-col justify-center h-[36px] justify-between py-[850px]">
         <div className="flex items-center justify-center">
-          <h3 className="text-foreground text-2xl font-semibold ">
-            {props.name}
-          </h3>
+            <h3 className="text-foreground text-2xl font-semibold ">
+                Popular
+            </h3>
         </div>
         <div className="flex grid grid-cols-5 justify-between items-center justify-center py-8">
           {movie.slice(0, 10).map((movie, index) => (
@@ -45,8 +39,7 @@ export const Upcoming = (props:props) => {
                   src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                   className="w-full h-[340px] justify-center "
                 />
-                <div className="h-[60px] w-full bg-gray-500 border ">
-
+                <div className="h-[60px] w-full bg-gray-500">
                   <p className="text-foreground text-sm">
                   <svg
                     width="16"
@@ -69,14 +62,6 @@ export const Upcoming = (props:props) => {
             </div>
           ))}
         </div>
-      </div>
-    </section>
-
-    
-
-
     </div>
-    
     )
 }
- 
