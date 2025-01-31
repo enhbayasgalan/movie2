@@ -1,5 +1,8 @@
 "use client";
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
+import { ThemeProvider } from "./theme-provider";
+import { useTheme } from "next-themes";
 export const Header = () => {
   const MovieData = async () => {
     const response = await fetch(
@@ -13,9 +16,23 @@ export const Header = () => {
     MovieData();
   }, []);
 
+  const { setTheme } = useTheme()
+
+
+  // const { dark setDark } = useState("")
+
+  // const Onclick = () => {
+  //   if (dark === "dark") {
+  //     setDark("light");
+  //   } else {
+  //     setDark("dark")
+  //   }
+  // }
+
+ 
   return (
-    <header className="sticky top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white">
-      <div className="flex items-center justify-center w-full max-w-screen-xl px-5 px-0">
+    <header className="fixed top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white">
+      <div className="flex items-center justify-between w-full max-w-screen-xl px-5 px-0">
         <div className="flex items-center gap-x-2 text-indigo-700">
           <svg
             width="20"
@@ -31,8 +48,8 @@ export const Header = () => {
           </svg>
           <h4 className="italic font-bold">Movie Z</h4>
         </div>
-        <div className="relative hidden flex items-center gap-x-3 ">
-          <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 w-[97px]">
+        <div className="relative hidden flex items-center gap-x-3">
+          <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 w-[97px] ">
             <svg
               width="16"
               height="17"
@@ -54,8 +71,10 @@ export const Header = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-x-3"> 
-          <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap h-9 w-9 border rounded-md ">
+        <div className="flex items-center gap-x-3">
+          <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap h-9 w-9 border rounded-md"
+           onClick={() => setTheme("dark")}
+          >
             <svg
               width="16"
               height="17"
@@ -68,6 +87,11 @@ export const Header = () => {
                 stroke="#18181B"
               />
             </svg>
+          </button>
+          <button
+            onClick={() => setTheme("light")}
+            >
+            Light
           </button>
         </div>
       </div>

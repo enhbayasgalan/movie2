@@ -2,9 +2,11 @@
 import Header from "@/components/header";
 
 import { Crad } from "@/components/crad";
-import {Upcoming} from "@/components/upcoming";
+import { Upcoming } from "@/components/upcoming";
 import { useEffect } from "react";
 import { useState } from "react";
+import { Footer } from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function Home() {
   const [movie, setMovies] = useState([]);
@@ -25,15 +27,23 @@ export default function Home() {
   console.log(movie);
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
-      <Header />
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        <Header />
 
-      <Crad />
-      
-      <Upcoming name={"Upcoming"} title={"upcoming"}/>
-      <Upcoming name={"Popular"} title={"popular"}/>
-      <Upcoming name={"Top Rated"} title={"top_rated"}/>
-      
-    </div>
+        <Crad />
+
+        <Upcoming name={"Upcoming"} title={"upcoming"} />
+        <Upcoming name={"Popular"} title={"popular"} />
+        <Upcoming name={"Top Rated"} title={"top_rated"} />
+
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }

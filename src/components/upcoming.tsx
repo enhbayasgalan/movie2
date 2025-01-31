@@ -1,3 +1,5 @@
+'use client'
+
 import { title } from "process";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -73,7 +75,7 @@ export const Upcoming = (props:props) => {
     </section>
 
     
-
+    
 
     </div>
     
