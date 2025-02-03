@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { log } from "console";
+import { use, useState } from "react";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface de {
   original_title: string;
@@ -11,17 +13,23 @@ interface de {
   backdrop_bath: string;
   release_date: number;
   runtime: number;
-  overview : string;
+  overview: string;
+  title: string;
+  id: number
 }
 type props = {
   movieID: number;
 };
+type name = {};
 // api_key=db430a8098715f8fab36009f57dff9f
 const Moviedetail = ({ movieID }: props) => {
   const [movie, setMovies] = useState<de[]>([]);
   const [isLoading, setLoading] = useState(false);
-  const [name2, setName] = useState({})
-
+  const [name2, setName] = useState<name[] | null>(null);
+  const [similar, setSimilar] = useState([]);
+  const [trailer, setTrailer] = useState("")
+  const [display, setDisplay] = useState(false)
+const router = useRouter()
   const MovieData = async () => {
     try {
       setLoading(true);
@@ -30,17 +38,27 @@ const Moviedetail = ({ movieID }: props) => {
       );
       const name = await fetch(
         `https://api.themoviedb.org/3/movie/${movieID}/credits?language=en-US&&api_key=db430a8098715f8fab36009f57dff9fb`
+      );
+      const similar = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieID}/similar?language=en-US&&api_key=db430a8098715f8fab36009f57dff9fb`
+      );
+      const video = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US&&api_key=db430a8098715f8fab36009f57dff9fb`
       )
       const result = await response.json();
-      const name2 = await name.json(); 
+      const trailer = await video.json()
+      const name2 = await name.json();
+      const similar2 = await similar.json();
       const movie = result;
       setMovies(movie);
-      setName(name2)
+      setName(name2);
+      setTrailer(trailer.results[0].key)
+      setSimilar(similar2.results);
       setLoading(false);
     } catch (error) {
       console.error();
     }
-  };  
+  };
 
   useEffect(() => {
     MovieData();
@@ -48,11 +66,19 @@ const Moviedetail = ({ movieID }: props) => {
 
   console.log(movie);
   console.log(name2);
+  console.log(trailer);
   
-
-  
-
-  return (
+  console.log("similar", similar);
+  const handleDetailMovie = (movieID:number)=>{
+    router.push(`/detail/${movieID}`)
+     }
+  const genres = movie.genres
+  return (<>
+   {display == true && ( <div onClick={()=> setDisplay(false)} className="absolute w-screen h-[2000px] flex items-center justify-center bg-black/80 fixed inset-0 z-50 ">
+      <div className="w-[512px] h-[280px] ">
+        <iframe src={`https://www.youtube.com/embed/${trailer}`}></iframe>
+      </div>
+    </div>)}
     <div className="w-screen flex flex-col items-center">
       {isLoading == false ? (
         <div className="mt-8 mb-4 w-[1080px] px-5 flex justify-between lg:mt-[52px] lg:mb-6 lg:px-0 py-8">
@@ -110,7 +136,7 @@ const Moviedetail = ({ movieID }: props) => {
           </div>
           <div className="absolute left-6 bottom-6 z-20">
             <div className="flex items-center text-white space-x-3">
-              <button className="inline-flex items-center justify-center gap-2 h-9 w-9 rounded-full bg-white">
+              <button onClick={()=> setDisplay(true)} className="inline-flex items-center justify-center gap-2 h-9 w-9 rounded-full bg-white">
                 <svg
                   width="16"
                   height="16"
@@ -130,22 +156,14 @@ const Moviedetail = ({ movieID }: props) => {
         <div className="flex gap-x-[34px]">
           <div className="space-y-5 mb-5">
             <div className="flex flex-wrap gap-3 w-[1080px]">
-              <div className="inline-flex items-center border px-2.5 py-0.5 font-semibold text-foreground rounded-full text-xs">
-                Action
-              </div>
-              <div className="inline-flex items-center border px-2.5 py-0.5 font-semibold text-foreground rounded-full text-xs">
-                Science Fiction
-              </div>
-              <div className="inline-flex items-center border px-2.5 py-0.5 font-semibold text-foreground rounded-full text-xs">
-                Comedy
-              </div>
-              <div className="inline-flex items-center border px-2.5 py-0.5 font-semibold text-foreground rounded-full text-xs">
-                Family
-              </div>
+           {genres && genres.map((genre)=>(
+               <div key={genre.id} className="inline-flex items-center border px-2.5 py-0.5 font-semibold text-foreground rounded-full text-xs">
+               {genre.name}
+             </div>
+           ))}
+            
             </div>
-            <p className="text-base w-[1080px]">
-            {movie.overview}
-            </p>
+            <p className="text-base w-[1080px]">{movie.overview}</p>
           </div>
         </div>
         <div className="space-y-5 text-foreground mb-8">
@@ -153,10 +171,10 @@ const Moviedetail = ({ movieID }: props) => {
             <div className="flex pb-1">
               <h4 className="font-bold w-16 mr-[50px]">Director</h4>
               <div className="flex flex-1 flex-wrap">
-                <p>{name2.crew[1].name}</p>
+                <p>{name2?.crew[1]?.name}</p>
               </div>
             </div>
-            <div className="shrink-0 bg-border h-[1px] w-full my-1 bg-gray-200"></div>
+            <div className="bg-border h-[1px] w-full bg-gray-200"></div>
           </div>
           <div className="space-y-1">
             <div className="flex pb-1">
@@ -170,22 +188,22 @@ const Moviedetail = ({ movieID }: props) => {
               <h4 className="font-bold w-16 mr-[50px]">Stars</h4>
               <div className="flex flex-1 flex-wrap">
                 <span>
-                {name2?.cast[0].name}
+                  {name2?.cast[0]?.name}
                   <span className="mx-2">·</span>
                 </span>
                 <span>
-                {name2?.cast[2].name}
+                  {name2?.cast[2]?.name}
                   <span className="mx-2">·</span>
                 </span>
                 <span>
-                {name2?.cast[3].name}
+                  {name2?.cast[3]?.name}
                   <span className="mx-2">·</span>
                 </span>
                 <span>
-                  {name2?.cast[4].name}
+                  {name2?.cast[4]?.name}
                   <span className="mx-2">·</span>
                 </span>
-                <span>{name2?.cast[5].name}</span>
+                <span>{name2?.cast[5]?.name}</span>
               </div>
             </div>
             <div className="shrink-0 bg-border h-[1px] w-full my-1 bg-gray-200"></div>
@@ -210,12 +228,19 @@ const Moviedetail = ({ movieID }: props) => {
               </svg>
             </div>
           </div>
-          <div className="flex flex-wrap gap-5 lg:gap-8">
-            <img src={`https://image.tmdb.org/t/p/original$`}/>
+          <div className="flex flex-wrap gap-5 lg:gap-8 grid grid-cols-5 ">
+            {similar.slice(0, 5).map((movie, index) => (
+              <img
+                src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                className=" w-[190px] h-[281px]"
+                key={index}
+                onClick={()=>handleDetailMovie(movie.id)}
+              />
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 };
 export default Moviedetail;

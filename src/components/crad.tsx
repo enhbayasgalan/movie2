@@ -19,7 +19,7 @@ interface el {
 
 export const Crad = () => {
   const [movie, setMovies] = useState<el[]>([]);
-const router = useRouter()
+  const router = useRouter()
   const MovieData = async () => {
     const response = await fetch(
       "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=db430a8098715f8fab36009f57dff9fb"
@@ -45,8 +45,8 @@ router.push(`/detail/${movieID}`)
             <CarouselItem key={index} onClick={()=>handleDetailMovie(movie.id)}>
               <div className="h-[600px] mt-[59px] ">
                 <img
-                  src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}   
-                />
+                  src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} 
+                 />
               </div>
             </CarouselItem>
           ))}
