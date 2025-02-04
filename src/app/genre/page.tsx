@@ -7,11 +7,11 @@ import { useState } from "react";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import Moviedetail from "@/components/Moviedetail";
-import { useParams } from "next/navigation";
+import { Genre } from "@/components/Genre";
 
 export default function Home() {
-    const {movieID} = useParams()
     
+ 
   return (
     <ThemeProvider
       attribute="class"
@@ -21,7 +21,7 @@ export default function Home() {
     >
       <div className="w-full h-full flex flex-col justify-center items-center">
         <Header />
-        <Moviedetail movieID={movieID}/>
+        <Genre />
         <Footer />
       </div>
     </ThemeProvider>

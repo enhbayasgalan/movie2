@@ -5,28 +5,46 @@ import { use, useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-interface de {
+type de = {
   original_title: string;
-  vote_avarage: number;
+  vote_average: number;
   poster_path: string;
-  results: Array<el>;
-  backdrop_bath: string;
+  backdrop_path: string;
   release_date: number;
   runtime: number;
   overview: string;
   title: string;
-  id: number
+  id: number;
+  genres : Array<gn> | undefined;
+}
+type gn ={
+  id : number;
+  name : string
+
 }
 type props = {
-  movieID: number;
+  movieID: string | string[] | undefined;
 };
-type name = {};
+type name = {
+  cast : Array<nm>;
+  crew : Array<dr>
+};
+type nm = {
+  name : string
+}
+type dr = { 
+  name : string
+}
+type similar = {
+  poster_path : string;
+  id : number
+}
 // api_key=db430a8098715f8fab36009f57dff9f
 const Moviedetail = ({ movieID }: props) => {
-  const [movie, setMovies] = useState<de[]>([]);
+  const [movie, setMovies] = useState<de | undefined>();
   const [isLoading, setLoading] = useState(false);
-  const [name2, setName] = useState<name[] | null>(null);
-  const [similar, setSimilar] = useState([]);
+  const [name2, setName] = useState<name | null>(null);
+  const [similar, setSimilar] = useState< similar[]>([]);
   const [trailer, setTrailer] = useState("")
   const [display, setDisplay] = useState(false)
 const router = useRouter()
@@ -72,7 +90,7 @@ const router = useRouter()
   const handleDetailMovie = (movieID:number)=>{
     router.push(`/detail/${movieID}`)
      }
-  const genres = movie.genres
+  const genres = movie?.genres
   return (<>
    {display == true && ( <div onClick={()=> setDisplay(false)} className="absolute w-screen h-[2000px] flex items-center justify-center bg-black/80 fixed inset-0 z-50 ">
       <div className="w-[512px] h-[280px] ">
@@ -87,7 +105,7 @@ const router = useRouter()
               {movie?.title}
             </h1>
             <h4 className="text-sm lg:text-lg">
-              {movie?.release_date} · PG · {movie.runtime}
+              {movie?.release_date} · PG · {movie?.runtime}
             </h4>
           </div>
           <div className="text-xs h-[72px]">
@@ -123,7 +141,7 @@ const router = useRouter()
       <div className=" flex gap-x-8 mb-8">
         <div className="overflow-hidden relative w-[290px] h-[428px] rounded">
           <img
-            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+            src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`}
           />
         </div>
 
@@ -131,7 +149,7 @@ const router = useRouter()
           <div className="absolute inset-0 z-10 bg-black/40"></div>
           <div className="relative overflow-hidden w-[375px] lg:w-[760px] h-[211px] lg:h-[428px] lg:rounded">
             <img
-              src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+              src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`}
             />
           </div>
           <div className="absolute left-6 bottom-6 z-20">
@@ -156,14 +174,14 @@ const router = useRouter()
         <div className="flex gap-x-[34px]">
           <div className="space-y-5 mb-5">
             <div className="flex flex-wrap gap-3 w-[1080px]">
-           {genres && genres.map((genre)=>(
+           {genres?.map((genre:gn)=>(
                <div key={genre.id} className="inline-flex items-center border px-2.5 py-0.5 font-semibold text-foreground rounded-full text-xs">
                {genre.name}
              </div>
            ))}
             
             </div>
-            <p className="text-base w-[1080px]">{movie.overview}</p>
+            <p className="text-base w-[1080px]">{movie?.overview}</p>
           </div>
         </div>
         <div className="space-y-5 text-foreground mb-8">
@@ -229,7 +247,7 @@ const router = useRouter()
             </div>
           </div>
           <div className="flex flex-wrap gap-5 lg:gap-8 grid grid-cols-5 ">
-            {similar.slice(0, 5).map((movie, index) => (
+            {similar.slice(0, 5).map((movie:similar, index:number) => (
               <img
                 src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                 className=" w-[190px] h-[281px]"

@@ -4,27 +4,44 @@ import { useEffect, useState } from "react";
 import { ThemeProvider } from "./theme-provider";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import { log } from "console";
+
+interface gen {
+  id: number;
+  name: string;
+}
+
 export const Header = () => {
-  
-  const MovieData = async () => {
+  const [genre, setGenre] = useState<gen[]>([]);
+
+  const [alert, setAlert] = useState(false);
+
+  const getMovieGenres = async () => {
     const response = await fetch(
-      "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=db430a8098715f8fab36009f57dff9fb"
+      `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=db430a8098715f8fab36009f57dff9fb`
     );
     const result = await response.json();
-    console.log(result);
+    setGenre(result.genres);
   };
 
   useEffect(() => {
-    MovieData();
+    getMovieGenres();
   }, []);
 
   const { setTheme } = useTheme();
-  const router = useRouter()
+  const router = useRouter();
 
-  
-  const handleHomePAge = ()=>{
-    router.push(`/`)
-     }
+  const handleHomePAge = () => {
+    router.push(`/`);
+  };
+
+  const buttonVariants = () => {
+    if (alert == false) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+    }
+  };
 
   // const { dark setDark } = useState("")
 
@@ -35,6 +52,11 @@ export const Header = () => {
   //     setDark("dark")
   //   }
   // }
+
+  console.log(genre);
+  const genreOpen = (id:number)=> {
+    router.push(`/genre?genreid=${id}`)
+  }
 
   return (
     <header className="fixed top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white">
@@ -52,10 +74,15 @@ export const Header = () => {
               stroke="#4338CA"
             />
           </svg>
-          <h4 className="italic font-bold" onClick={()=> handleHomePAge()}>Movie Z</h4>
+          <h4 className="italic font-bold" onClick={() => handleHomePAge()}>
+            Movie Z
+          </h4>
         </div>
         <div className="relative  flex items-center gap-x-3">
-          <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 w-[97px] ">
+          <button
+            onClick={() => buttonVariants()}
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 w-[97px] "
+          >
             <svg
               width="16"
               height="17"
@@ -63,13 +90,43 @@ export const Header = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                d="M4 6.5L8 10.5L12 6.5"
-                stroke="#18181B"
-              />
+              <path d="M4 6.5L8 10.5L12 6.5" stroke="#18181B" />
             </svg>
+            <div></div>
             Genre
           </button>
+          {alert == true && (
+            <div className="z-50 min-w-[8rem] overflow-hidden absolute top-10 rounded-md border bg-white p-5 w-[557px] h-[340px]">
+              <div className="text-foreground space-y-1">
+                <h3 className="text-2xl font-semibold">Genres</h3>
+                <p className="text-base">See lists of movies by genre </p>
+              </div>
+              <div className="bg-border h-[1px] w-full border mt-[16px]"></div>
+              <div className="relative flex items-center gap-2 rounded-sm outline-none p-0 cursor-default select-none mt-[10px]">
+                <div className="flex flex-wrap gap-4">
+                  {genre.map((el) => (
+                    <div key={el.id}>
+                      <button onClick={()=>genreOpen(el.id)} className="inline-flex items-center border px-6 px-0.5 text-xs font-semibold rounded-full cursor-pointer">
+                        {el.name}
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6 12L10 8L6 4"
+                            stroke="#09090B"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           <div>
             <div className="relative text-muted-foreground w-[379px]">
               <input

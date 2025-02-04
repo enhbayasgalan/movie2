@@ -43,7 +43,7 @@ router.push(`/detail/${movieID}`)
         <CarouselContent  >
           {movie.map((movie , index ) => (
             <CarouselItem key={index} onClick={()=>handleDetailMovie(movie.id)}>
-              <div className="h-[600px] mt-[59px] ">
+              <div className="h-[600px] mt-[59px] mt-[80px]">
                 <img
                   src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} 
                  />
