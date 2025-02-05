@@ -82,17 +82,12 @@ const router = useRouter()
     MovieData();
   }, [movieID]);
 
-  console.log(movie);
-  console.log(name2);
-  console.log(trailer);
-  
-  console.log("similar", similar);
   const handleDetailMovie = (movieID:number)=>{
     router.push(`/detail/${movieID}`)
      }
   const genres = movie?.genres
   return (<>
-   {display == true && ( <div onClick={()=> setDisplay(false)} className="absolute w-screen h-[2000px] flex items-center justify-center bg-black/80 fixed inset-0 z-50 ">
+   {display == true && ( <div onClick={()=> setDisplay(false)} className=" w-screen h-screen flex items-center justify-center bg-black/80 fixed inset-0 z-50 ">
       <div className="w-[512px] h-[280px] ">
         <iframe src={`https://www.youtube.com/embed/${trailer}`}></iframe>
       </div>
