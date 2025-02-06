@@ -4,47 +4,44 @@ import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
 
 type gen = {
   id: string;
   name: string;
   poster_path: string;
-}
+};
 type Movies = {
   results: Array<Movie>;
-  total_pages : number
+  total_pages: number;
+  total_results: number;
 };
 type Movie = {
   poster_path: string;
   id: string;
-
 };
 
 export const Genre = () => {
-  // const [genreID, setGenreID] = useQueryState("genreid");
   const [genre, setGenre] = useState<gen[]>([]);
   const [movies, setMovies] = useState<Movies | undefined>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const genreID = (searchParams.get("genres") || "").split(",");
+  const genreID = searchParams.get("genreid") ? searchParams.get("genreid")?.split(",") : [];
+
+  console.log("genreID", genreID);
+
   const genreMovie = async () => {
     try {
       const gener = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID.join(",")}&page=1&api_key=db430a8098715f8fab36009f57dff9fb`
+        ` https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID.join(
+          ","
+        )}&page=1&api_key=db430a8098715f8fab36009f57dff9fb`
       );
+      console.log("ajillaa");
+
       const result = await gener.json();
-      setMovies(result);
       console.log(result);
-      
+      setMovies(result);
+      // console.log(result);
     } catch (error) {
       console.error();
     } finally {
@@ -52,10 +49,21 @@ export const Genre = () => {
   };
   useEffect(() => {
     genreMovie();
-  }, [genreID]);
+  }, [searchParams]);
   // console.log(movies);
   const movie = movies?.results;
-  
+
+  const genreOpen = (id: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    genreID.push(id);
+    params.set("genreid", genreID.join(","));
+
+    // console.log(genreID);
+    // console.log(searchParams);
+
+    router.push(`?${params.toString()}`);
+  };
+  // console.log(genreID);
 
   const getMovieGenres = async () => {
     const response = await fetch(
@@ -68,17 +76,6 @@ export const Genre = () => {
   useEffect(() => {
     getMovieGenres();
   }, []);
-
-  const genreOpen = (id: string) => {
-    const params = new URLSearchParams(searchParams.toString())
-    genreID.push(id);
-    params.set("genreid", genreID.join(","));
-
- 
-    router.push(`?${params.toString()}`);
-  };
-
-
 
   return (
     <div className="pt-[59px]">
@@ -118,45 +115,18 @@ export const Genre = () => {
           </div>
           <div className="bg-border w-[1px] border h-screen mx-4"></div>
           <div className="flex-1 pr-12">
-            <h4 className="text-xl font-semibold">42656 titles</h4>
+            <h4 className="text-xl font-semibold">
+              {movies?.total_results} titles
+            </h4>
             <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8 ">
-            {movie?.map((genre: Movie) => (
+              {movies?.results?.map((genre: Movie) => (
                 <img
                   key={genre.id}
                   src={`https://image.tmdb.org/t/p/original/${genre.poster_path}`}
                   className="w-[165px] h-[244px] "
                 />
-            ))}
-            <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#" >
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#" isActive>4</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">5</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+              ))}
+              
             </div>
           </div>
         </div>
@@ -164,4 +134,3 @@ export const Genre = () => {
     </div>
   );
 };
-
