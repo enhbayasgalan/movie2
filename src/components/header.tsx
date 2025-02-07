@@ -17,12 +17,20 @@ type gry = {
   vote_average: number;
   release_date: number;
 };
+type data = {
+  poster_path : string,
+  id : number,
+  original_title : string,
+  release_date : string,
+  vote_average : number
+
+}
 
 export const Header = () => {
   const [genre, setGenre] = useState<gen[]>([]);
   const [searchValue, setSearch] = useState("");
   const [alert, setAlert] = useState(false);
-  const [movie, setMovies] = useState([]);
+  const [movie, setMovies] = useState<data[]>([]);
   const searchParams = useSearchParams();
   const genreID = searchParams.get("genreid")
     ? searchParams.get("genreid")?.split(",")
@@ -63,7 +71,7 @@ export const Header = () => {
     }
   };
 
-  const onSearchValue = (event) => {
+  const onSearchValue = (event :React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
@@ -80,8 +88,10 @@ export const Header = () => {
   // console.log(genre);
   const genreOpen = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    genreID.push(id);
-    params.set("genreid", genreID.join(","));
+    genreID?.push(id);
+    if(genreID){
+      params.set("genreid", genreID?.join(","));
+    }
 
     router.push(`/genre/?${params.toString()}`);
   };
@@ -165,7 +175,7 @@ export const Header = () => {
            {searchValue.length !==0 && ( <div className="rounded-xl border bg-white p-3 h-[720px] text-card-foreground absolute w-[500px] ">
               <div className="flex gap-x-4 p-2 rounded-md">
                 <div className="relative  w-[67px] h-[100px] rounded-md">
-                  {movie.slice(0, 5).map((movie, index) => (
+                  {movie.slice(0, 5).map((movie:data, index) => (
                     <div key={index} className="flex gap-x-4 gap-2 ">
                       <img
                         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}

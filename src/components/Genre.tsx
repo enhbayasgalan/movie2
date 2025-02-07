@@ -17,10 +17,12 @@ type Movies = {
   results: Array<Movie>;
   total_pages: number;
   total_results: number;
+  
 };
 type Movie = {
   poster_path: string;
-  id: string;
+  id: number;
+  vote_average : number
 };
 
 export const Genre = () => {
@@ -36,17 +38,20 @@ export const Genre = () => {
 
   const genreMovie = async () => {
     try {
+      if(genreID){
       const gener = await fetch(
         ` https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID.join(
           ","
         )}&page=1&api_key=db430a8098715f8fab36009f57dff9fb`
       );
       // console.log("ajillaa");
+    
 
       const result = await gener.json();
       // console.log(result);
       setMovies(result);
       // console.log(result);
+    }
     } catch (error) {
       console.error();
     } finally {
@@ -60,16 +65,18 @@ export const Genre = () => {
 
   const genreOpen = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
- 
+
     const index = genreID?.indexOf(id.toString())
     if (genreID?.includes(id.toString())){
       genreID.splice(index, index+1)
     }else{
-      genreID.push(id);
+      genreID?.push(id);
     }
   
-    
-    params.set("genreid", genreID.join(","));
+    if(genreID){
+      params.set("genreid", genreID.join(","));
+    }
+
     console.log(index);
     // console.log(searchParams);
 
