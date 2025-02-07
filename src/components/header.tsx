@@ -27,7 +27,7 @@ export const Header = () => {
   const genreID = searchParams.get("genreid")
     ? searchParams.get("genreid")?.split(",")
     : [];
-  console.log("movie", movie);
+  // console.log("movie", movie);
   const getMovieGenres = async () => {
     const response = await fetch(
       `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=db430a8098715f8fab36009f57dff9fb`
@@ -41,7 +41,7 @@ export const Header = () => {
     const seacrhmovie = await search.json();
     setMovies(seacrhmovie.results);
     setGenre(result.genres);
-    console.log("asdasdas", seacrhmovie);
+    // console.log("asdasdas", seacrhmovie);
   };
 
   useEffect(() => {
@@ -77,14 +77,21 @@ export const Header = () => {
   //   }
   // }
 
-  console.log(genre);
+  // console.log(genre);
   const genreOpen = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
     genreID.push(id);
     params.set("genreid", genreID.join(","));
 
-    router.push(`genre/?${params.toString()}`);
+    router.push(`/genre/?${params.toString()}`);
   };
+  
+
+  const handleDetailMovie = (movieID:number)=>{
+    router.push(`/detail/${movieID}`)
+     }
+
+
   return (
     <header className="fixed top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white">
       <div className="flex items-center justify-between w-full max-w-screen-xl px-5 px-0">
@@ -110,15 +117,6 @@ export const Header = () => {
             onClick={() => buttonVariants()}
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 w-[97px] "
           >
-            <svg
-              width="16"
-              height="17"
-              viewBox="0 0 16 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M4 6.5L8 10.5L12 6.5" stroke="#18181B" />
-            </svg>
             <div></div>
             Genre
           </button>
@@ -164,16 +162,16 @@ export const Header = () => {
                 value={searchValue}
               />
             </div>
-            <div className="rounded-xl border bg-white p-3 h-[720px] text-card-foreground absolute w-[450px]">
+           {searchValue.length !==0 && ( <div className="rounded-xl border bg-white p-3 h-[720px] text-card-foreground absolute w-[500px] ">
               <div className="flex gap-x-4 p-2 rounded-md">
                 <div className="relative  w-[67px] h-[100px] rounded-md">
-                  {movie.slice(0, 5).map((movie, search) => (
-                    <div className="flex gap-x-4 gap-2 ">
+                  {movie.slice(0, 5).map((movie, index) => (
+                    <div key={index} className="flex gap-x-4 gap-2 ">
                       <img
                         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                        key={search}
                         className="gap-x-4 py-4"
-                      />
+                        onClick={()=>handleDetailMovie(movie.id)}
+                      />                
                       <div className="flex-1 text-foreground">
                         <h4 className="w-48 lg:w-96 text-xl font-semibold truncate mt-[10px]">
                           {movie.original_title}
@@ -198,14 +196,14 @@ export const Header = () => {
                         </div>
                         <div className="mt-3 flex justify-between text-sm font-medium">
                           <h5>{movie.release_date}</h5>
-                          <div>See more</div>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+              <div className="bg-border h-[1px] w-full border"></div>
+            </div>)}
           </div>
         </div>
         <div className="flex items-center gap-x-3">

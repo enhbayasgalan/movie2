@@ -47,6 +47,13 @@ router.push(`/detail/${movieID}`)
                 <img
                   src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} 
                  />
+                 <div className="p-5 space-y-4 lg:p-0">
+                  <div className="flex justify-between lg:flex-col lg:space-y-1">
+                    <div>
+                      <h4 className="text-sm">Now Playing:</h4>
+                    </div>
+                  </div>
+                 </div>
               </div>
             </CarouselItem>
           ))}

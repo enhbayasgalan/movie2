@@ -4,11 +4,14 @@ import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { split } from "postcss/lib/list";
 
 type gen = {
   id: string;
   name: string;
   poster_path: string;
+  vote_average: number;
+  title: string;  
 };
 type Movies = {
   results: Array<Movie>;
@@ -25,9 +28,11 @@ export const Genre = () => {
   const [movies, setMovies] = useState<Movies | undefined>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const genreID = searchParams.get("genreid") ? searchParams.get("genreid")?.split(",") : [];
+  const genreID = searchParams.get("genreid")
+    ? searchParams.get("genreid")?.split(",")
+    : [];
 
-  console.log("genreID", genreID);
+  // console.log("genreID", genreID);
 
   const genreMovie = async () => {
     try {
@@ -36,10 +41,10 @@ export const Genre = () => {
           ","
         )}&page=1&api_key=db430a8098715f8fab36009f57dff9fb`
       );
-      console.log("ajillaa");
+      // console.log("ajillaa");
 
       const result = await gener.json();
-      console.log(result);
+      // console.log(result);
       setMovies(result);
       // console.log(result);
     } catch (error) {
@@ -55,15 +60,22 @@ export const Genre = () => {
 
   const genreOpen = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    genreID.push(id);
+ 
+    const index = genreID?.indexOf(id.toString())
+    if (genreID?.includes(id.toString())){
+      genreID.splice(index, index+1)
+    }else{
+      genreID.push(id);
+    }
+  
+    
     params.set("genreid", genreID.join(","));
-
-    // console.log(genreID);
+    console.log(index);
     // console.log(searchParams);
 
     router.push(`?${params.toString()}`);
   };
-  // console.log(genreID);
+  console.log(searchParams);
 
   const getMovieGenres = async () => {
     const response = await fetch(
@@ -76,6 +88,13 @@ export const Genre = () => {
   useEffect(() => {
     getMovieGenres();
   }, []);
+
+  const handleDetailMovie = (movieID:number)=>{
+  router.push(`/detail/${movieID}`)
+  }
+console.log("genre id" ,genreID);
+
+
 
   return (
     <div className="pt-[59px]">
@@ -94,19 +113,14 @@ export const Genre = () => {
                 {genre.map((el) => (
                   <div key={el.id}>
                     <button
+
                       onClick={() => genreOpen(el.id)}
                       className="inline-flex items-center border px-6 px-0.5 text-xs font-semibold rounded-full"
+                      style={{background : genreID?.includes(el.id.toString()) ? "black" : "white",
+                        color : genreID?.includes(el.id.toString()) ? "white" : "black"
+                      }}
                     >
                       {el.name}
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M6 12L10 8L6 4" stroke="#09090B" />
-                      </svg>
                     </button>
                   </div>
                 ))}
@@ -118,15 +132,40 @@ export const Genre = () => {
             <h4 className="text-xl font-semibold">
               {movies?.total_results} titles
             </h4>
-            <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8 ">
-              {movies?.results?.map((genre: Movie) => (
-                <img
-                  key={genre.id}
-                  src={`https://image.tmdb.org/t/p/original/${genre.poster_path}`}
-                  className="w-[165px] h-[244px] "
-                />
+            <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8">
+              {movies?.results?.map((genre: Movie, index) => (
+                <div key={index} className="rounded-lg space-y-1 bg-red-300">
+                  <img
+                    key={genre.id}
+                    src={`https://image.tmdb.org/t/p/original/${genre.poster_path}`}
+                    className="w-[165px] h-[244px] "
+                    onClick={()=>handleDetailMovie(genre?.id)}
+                  />
+                  <div className="p-2">
+                    <div className="flex items-center gap-x-1 ">
+                      <svg
+                        width="17"
+                        height="18"
+                        viewBox="0 0 17 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M8.18913 3.33301L10.2491 7.50634L14.8558 8.17968L11.5225 11.4263L12.3091 16.013L8.18913 13.8463L4.06913 16.013L4.85579 11.4263L1.52246 8.17968L6.12913 7.50634L8.18913 3.33301Z"
+                          fill="#FDE047"
+                          stroke="#FDE047"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <div className="font-medium">
+                        <p className="text-foreground text-sm">{genre?.vote_average}<span className="text-gray-500">/10</span></p>
+                      </div>
+                    </div> 
+                   
+                  </div>
+                </div>
               ))}
-              
             </div>
           </div>
         </div>
