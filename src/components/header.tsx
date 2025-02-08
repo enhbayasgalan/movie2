@@ -176,6 +176,7 @@ export const Header = () => {
               <div className="flex gap-x-4 p-2 rounded-md">
                 <div className="relative  w-[67px] h-[100px] rounded-md">
                   {movie.slice(0, 5).map((movie:data, index) => (
+                    <div>
                     <div key={index} className="flex gap-x-4 gap-2 ">
                       <img
                         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
@@ -209,10 +210,10 @@ export const Header = () => {
                         </div>
                       </div>
                     </div>
+                    </div>
                   ))}
                 </div>
               </div>
-              <div className="bg-border h-[1px] w-full border"></div>
             </div>)}
           </div>
         </div>

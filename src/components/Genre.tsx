@@ -169,7 +169,6 @@ console.log("genre id" ,genreID);
                         <p className="text-foreground text-sm">{genre?.vote_average}<span className="text-gray-500">/10</span></p>
                       </div>
                     </div> 
-                   
                   </div>
                 </div>
               ))}
