@@ -5,7 +5,16 @@ import { ThemeProvider } from "./theme-provider";
 import { useTheme } from "next-themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { log } from "console";
-import { Divide, Search } from "lucide-react";
+import { Divide, Moon, Search, Sun } from "lucide-react";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface gen {
   id: string;
@@ -18,13 +27,12 @@ type gry = {
   release_date: number;
 };
 type data = {
-  poster_path : string,
-  id : number,
-  original_title : string,
-  release_date : string,
-  vote_average : number
-
-}
+  poster_path: string;
+  id: number;
+  original_title: string;
+  release_date: string;
+  vote_average: number;
+};
 
 export const Header = () => {
   const [genre, setGenre] = useState<gen[]>([]);
@@ -55,8 +63,16 @@ export const Header = () => {
   useEffect(() => {
     getMovieGenres();
   }, [searchValue]);
-
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+  const onClick=()=>{
+    if(theme=="dark"){
+      setTheme("light")
+    }
+    else{
+      setTheme("dark")
+    }
+ 
+  }
   const router = useRouter();
 
   const handleHomePAge = () => {
@@ -71,7 +87,7 @@ export const Header = () => {
     }
   };
 
-  const onSearchValue = (event :React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
@@ -89,21 +105,19 @@ export const Header = () => {
   const genreOpen = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
     genreID?.push(id);
-    if(genreID){
+    if (genreID) {
       params.set("genreid", genreID?.join(","));
     }
 
     router.push(`/genre/?${params.toString()}`);
   };
-  
 
-  const handleDetailMovie = (movieID:number)=>{
-    router.push(`/detail/${movieID}`)
-     }
-
+  const handleDetailMovie = (movieID: number) => {
+    router.push(`/detail/${movieID}`);
+  };
 
   return (
-    <header className="fixed top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white">
+    <header className="fixed top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white dark:bg-black">
       <div className="flex items-center justify-between w-full max-w-screen-xl px-5 px-0">
         <div className="flex items-center gap-x-2 text-indigo-700">
           <svg
@@ -131,7 +145,7 @@ export const Header = () => {
             Genre
           </button>
           {alert == true && (
-            <div className="z-50 min-w-[8rem] overflow-hidden absolute top-10 rounded-md border bg-white p-5 w-[557px] h-[340px]">
+            <div className="z-50 min-w-[8rem] overflow-hidden absolute top-10 rounded-md border bg-white dark:bg-black p-5 w-[557px] h-[340px]">
               <div className="text-foreground space-y-1">
                 <h3 className="text-2xl font-semibold">Genres</h3>
                 <p className="text-base">See lists of movies by genre </p>
@@ -166,76 +180,72 @@ export const Header = () => {
             <div className="relative text-muted-foreground w-[379px]">
               <input
                 type="text"
-                placeholder="search..."
+                placeholder="search..." 
                 className="flex h-9 w-full rounded-md border px-3 px-1 pl-[38px]"
                 onChange={onSearchValue}
                 value={searchValue}
               />
             </div>
-           {searchValue.length !==0 && ( <div className="rounded-xl border bg-white p-3 h-[720px] text-card-foreground absolute w-[500px] ">
-              <div className="flex gap-x-4 p-2 rounded-md">
-                <div className="relative  w-[67px] h-[100px] rounded-md">
-                  {movie.slice(0, 5).map((movie:data, index) => (
-                    <div>
-                    <div key={index} className="flex gap-x-4 gap-2 ">
-                      <img
-                        src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                        className="gap-x-4 py-4"
-                        onClick={()=>handleDetailMovie(movie.id)}
-                      />                
-                      <div className="flex-1 text-foreground">
-                        <h4 className="w-48 lg:w-96 text-xl font-semibold truncate mt-[10px]">
-                          {movie.original_title}
-                        </h4>
-                        <div className="flex items-center gap-x-1">
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M7.99967 1.33301L10.0597 5.50634L14.6663 6.17968L11.333 9.42634L12.1197 14.013L7.99967 11.8463L3.87967 14.013L4.66634 9.42634L1.33301 6.17968L5.93967 5.50634L7.99967 1.33301Z"
-                              fill="#FDE047"
-                              stroke="#FDE047"
-                            />
-                          </svg>
-                          <div className="font-medium">
-                            <p className="text-sm text-foreground">{movie.vote_average}<span className="text-gray-500">/10</span></p>
+            {searchValue.length !== 0 && (
+              <div className="rounded-xl border bg-white dark:bg-black p-3 h-[720px] text-card-foreground absolute w-[500px] ">
+                <div className="flex gap-x-4 p-2 rounded-md">
+                  <div className="relative  w-[67px] h-[100px] rounded-md">
+                    {movie.slice(0, 5).map((movie: data, index) => (
+                      <div>
+                        <div key={index} className="flex gap-x-4 gap-2 ">
+                          <img
+                            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                            className="gap-x-4 py-4"
+                            onClick={() => handleDetailMovie(movie.id)}
+                          />
+                          <div className="flex-1 text-foreground">
+                            <h4 className="w-48 lg:w-96 text-xl font-semibold truncate mt-[10px]">
+                              {movie.original_title}
+                            </h4>
+                            <div className="flex items-center gap-x-1">
+                              <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M7.99967 1.33301L10.0597 5.50634L14.6663 6.17968L11.333 9.42634L12.1197 14.013L7.99967 11.8463L3.87967 14.013L4.66634 9.42634L1.33301 6.17968L5.93967 5.50634L7.99967 1.33301Z"
+                                  fill="#FDE047"
+                                  stroke="#FDE047"
+                                />
+                              </svg>
+                              <div className="font-medium">
+                                <p className="text-sm text-foreground">
+                                  {movie.vote_average}
+                                  <span className="text-gray-500">/10</span>
+                                </p>
+                              </div>
+                            </div>
+                            <div className="mt-3 flex justify-between text-sm font-medium">
+                              <h5>{movie.release_date}</h5>
+                            </div>
                           </div>
                         </div>
-                        <div className="mt-3 flex justify-between text-sm font-medium">
-                          <h5>{movie.release_date}</h5>
-                        </div>
                       </div>
-                    </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>)}
+            )}
           </div>
         </div>
         <div className="flex items-center gap-x-3">
-          <button
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap h-9 w-9 border rounded-md"
-            onClick={() => setTheme("dark")}
-          >
-            <svg
-              width="16"
-              height="17"
-              viewBox="0 0 16 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8 2.5C7.20435 3.29565 6.75736 4.37478 6.75736 5.5C6.75736 6.62522 7.20435 7.70435 8 8.5C8.79565 9.29565 9.87478 9.74264 11 9.74264C12.1252 9.74264 13.2044 9.29565 14 8.5C14 9.68669 13.6481 10.8467 12.9888 11.8334C12.3295 12.8201 11.3925 13.5892 10.2961 14.0433C9.19975 14.4974 7.99335 14.6162 6.82946 14.3847C5.66558 14.1532 4.59648 13.5818 3.75736 12.7426C2.91825 11.9035 2.3468 10.8344 2.11529 9.67054C1.88378 8.50666 2.0026 7.30026 2.45673 6.2039C2.91085 5.10754 3.67989 4.17047 4.66658 3.51118C5.65328 2.85189 6.81331 2.5 8 2.5Z"
-                stroke="#18181B"
-              />
-            </svg>
-          </button>
-          <button onClick={() => setTheme("light")}>Light</button>
+        <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size="icon" onClick={onClick}>
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+    </DropdownMenu>
         </div>
       </div>
     </header>

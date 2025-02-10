@@ -70,7 +70,7 @@ const moviesAll = movie
                 className="w-[230px] overflow-hidden rounded-lg bg-gray-200 space-y-1 flex items-center mt-[15px] "
                 key={index}
               >
-                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px] ">
+                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px]">
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                     className="w-full h-[340px] justify-center "
@@ -115,8 +115,8 @@ const moviesAll = movie
                     className="w-full h-[340px] justify-center "
                     onClick={() => handleDetailMovie(movie.id)}
                   />
-                  <div className="h-[60px] w-full bg-gray-200 ">
-                    <p className="text-foreground text-sm">
+                  <div className="h-[90px] w-full bg-gray-200 ">
+                    <p className="text-foreground text-sm flex">
                       <svg
                         width="16"
                         height="16"

@@ -2,10 +2,11 @@
 
 import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
-
+import { Ripple } from 'react-css-spinners'
 import { useRouter, useSearchParams } from "next/navigation";
 import { split } from "postcss/lib/list";
-
+import { useTheme } from "next-themes";
+import { Skeleton } from "@/components/ui/skeleton"
 type gen = {
   id: string;
   name: string;
@@ -23,6 +24,7 @@ type Movie = {
   poster_path: string;
   id: number;
   vote_average : number
+  original_title: string;
 };
 
 export const Genre = () => {
@@ -33,7 +35,7 @@ export const Genre = () => {
   const genreID = searchParams.get("genreid")
     ? searchParams.get("genreid")?.split(",")
     : [];
-
+const {theme} = useTheme()
   // console.log("genreID", genreID);
 
   const genreMovie = async () => {
@@ -102,6 +104,7 @@ export const Genre = () => {
 console.log("genre id" ,genreID);
 
 
+  
 
   return (
     <div className="pt-[59px]">
@@ -110,7 +113,7 @@ console.log("genre id" ,genreID);
           Search Filters
         </h2>
         <div className="flex">
-          <div className="w-fit top-[111px] ">
+          <div className="w-fit top-[111px]">
             <div className="space-y-5">
               <div className="">
                 <h3 className="text-2xl font-semibold">Genres</h3>
@@ -119,13 +122,13 @@ console.log("genre id" ,genreID);
               <div className="flex flex-wrap gap-4 w-[387px]">
                 {genre.map((el) => (
                   <div key={el.id}>
-                    <button
-
+                    <button 
                       onClick={() => genreOpen(el.id)}
-                      className="inline-flex items-center border px-6 px-0.5 text-xs font-semibold rounded-full"
-                      style={{background : genreID?.includes(el.id.toString()) ? "black" : "white",
+                      className="inline-flex items-center border px-6 px-0.5 text-xs font-semibold rounded-full "
+                      style={theme == "light" ?{background : genreID?.includes(el.id.toString()) ? "black" : "white",
                         color : genreID?.includes(el.id.toString()) ? "white" : "black"
-                      }}
+                      }:{background : genreID?.includes(el.id.toString()) ? "white" : "black",
+                        color : genreID?.includes(el.id.toString()) ? "black" : "white"}}
                     >
                       {el.name}
                     </button>
@@ -139,15 +142,17 @@ console.log("genre id" ,genreID);
             <h4 className="text-xl font-semibold">
               {movies?.total_results} titles
             </h4>
-            <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8">
+            <Skeleton className="h-[125px]  rounded-xl">
+            <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8 ">
               {movies?.results?.map((genre: Movie, index) => (
-                <div key={index} className="rounded-lg space-y-1 bg-red-300">
+                <div key={index} className="rounded-lg space-y-1 bg-gray-300 w-[165px]">
                   <img
                     key={genre.id}
                     src={`https://image.tmdb.org/t/p/original/${genre.poster_path}`}
                     className="w-[165px] h-[244px] "
                     onClick={()=>handleDetailMovie(genre?.id)}
                   />
+                  
                   <div className="p-2">
                     <div className="flex items-center gap-x-1 ">
                       <svg
@@ -165,14 +170,17 @@ console.log("genre id" ,genreID);
                           strokeLinejoin="round"
                         />
                       </svg>
+                      
                       <div className="font-medium">
                         <p className="text-foreground text-sm">{genre?.vote_average}<span className="text-gray-500">/10</span></p>
                       </div>
                     </div> 
+                    <p className="h-14 overflow-hidden line-clamp-2 text-lg ">{genre?.original_title}</p>
                   </div>
                 </div>
               ))}
             </div>
+            </Skeleton>
           </div>
         </div>
       </div>

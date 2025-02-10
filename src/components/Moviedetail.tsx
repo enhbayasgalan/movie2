@@ -23,6 +23,8 @@ type gn = {
 };
 type props = {
   movieID: string | string[] | undefined;
+  name: string | string[] | undefined;
+  title: string | string[] | undefined;
 };
 type name = {
   cast: Array<nm>;
@@ -40,6 +42,7 @@ type similar = {
   vote_average: number;
   original_title: string;
 };
+
 // api_key=db430a8098715f8fab36009f57dff9f
 const Moviedetail = ({ movieID }: props) => {
   const [movie, setMovies] = useState<de | undefined>();
@@ -79,7 +82,7 @@ const Moviedetail = ({ movieID }: props) => {
     }
   };
 
- 
+
 
   useEffect(() => {
     MovieData();
@@ -90,7 +93,7 @@ const Moviedetail = ({ movieID }: props) => {
   };
   const genres = movie?.genres;
 
-
+  
 
   return (
     <>
@@ -266,7 +269,7 @@ const Moviedetail = ({ movieID }: props) => {
                 </svg>
               </div>
             </div>
-            <div className="flex flex-wrap gap-5 lg:gap-8 grid grid-cols-5 ">
+            <div  className="flex flex-wrap gap-5 lg:gap-8 grid grid-cols-5 ">
               {similar.slice(0, 5).map((movie: similar, index: number) => (
                 <div className="rounded-lg bg-gray-200 w-[190px] space-y-1">
                   <div>
