@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <footer className="bg-indigo-700 py-10 px-[1000px] text-[#fafafa]">
+    <footer className="bg-indigo-700 py-10  text-[#fafafa]">
       <div className="flex flex-col justify-between gap-y-7  max-w-screen-xl flex-row">
         <div className="space-y-3">
           <div className="flex items-center gap-x-2">

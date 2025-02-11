@@ -33,8 +33,11 @@ type data = {
   release_date: string;
   vote_average: number;
 };
+type props = {
+  location : string
+}
 
-export const Header = () => {
+export const Header = ({location}:props) => {
   const [genre, setGenre] = useState<gen[]>([]);
   const [searchValue, setSearch] = useState("");
   const [alert, setAlert] = useState(false);
@@ -89,7 +92,11 @@ export const Header = () => {
 
   const onSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("value", event.target.value)
+{location == "Search" && router.push(`/search/?${params}`)}
   };
+  const searchValueParams = searchParams.get("value")
 
   // const { dark setDark } = useState("")
 
@@ -104,7 +111,12 @@ export const Header = () => {
   // console.log(genre);
   const genreOpen = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    genreID?.push(id);
+    const index = genreID?.indexOf(id.toString())
+    if (genreID?.includes(id.toString())){
+      genreID.splice(index, index+1)
+    }else{
+      genreID?.push(id);
+    }
     if (genreID) {
       params.set("genreid", genreID?.join(","));
     }
@@ -115,6 +127,11 @@ export const Header = () => {
   const handleDetailMovie = (movieID: number) => {
     router.push(`/detail/${movieID}`);
   };
+  const handleSearchResults = ()=> {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("value", searchValue)
+    router.push(`search/?${params}`)
+  }
 
   return (
     <header className="fixed top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white dark:bg-black">
@@ -158,6 +175,10 @@ export const Header = () => {
                       <button
                         onClick={() => genreOpen(el.id)}
                         className="inline-flex items-center border px-6 px-0.5 text-xs font-semibold rounded-full cursor-pointer"
+                        style={theme == "light" ?{background : genreID?.includes(el.id.toString()) ? "black" : "white",
+                          color : genreID?.includes(el.id.toString()) ? "white" : "black"
+                        }:{background : genreID?.includes(el.id.toString()) ? "white" : "black",
+                          color : genreID?.includes(el.id.toString()) ? "black" : "white"}}
                       >
                         {el.name}
                         <svg
@@ -178,21 +199,28 @@ export const Header = () => {
           )}
           <div>
             <div className="relative text-muted-foreground w-[379px]">
-              <input
+           {location !== "Search" && (<input
                 type="text"
                 placeholder="search..." 
                 className="flex h-9 w-full rounded-md border px-3 px-1 pl-[38px]"
                 onChange={onSearchValue}
                 value={searchValue}
-              />
+              />)}
+              {location == "Search" &&  (<input
+                type="text"
+                placeholder="search..." 
+                className="flex h-9 w-full rounded-md border px-3 px-1 pl-[38px]"
+                onChange={onSearchValue}
+                value={searchValueParams || ""}
+              />)}
             </div>
             {searchValue.length !== 0 && (
               <div className="rounded-xl border bg-white dark:bg-black p-3 h-[720px] text-card-foreground absolute w-[500px] ">
                 <div className="flex gap-x-4 p-2 rounded-md">
-                  <div className="relative  w-[67px] h-[100px] rounded-md">
+                  <div  className="relative  w-[67px] h-[100px] rounded-md">
                     {movie.slice(0, 5).map((movie: data, index) => (
-                      <div>
-                        <div key={index} className="flex gap-x-4 gap-2 ">
+                      <div key={index}>
+                        <div  className="flex gap-x-4 gap-2 ">
                           <img
                             src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                             className="gap-x-4 py-4"
@@ -231,6 +259,7 @@ export const Header = () => {
                       </div>
                     ))}
                   </div>
+                  <div onClick={()=> handleSearchResults()} className="py-4 py-2.5 text-sm font-medium text-foreground mt-[656px] ">See all results for "{searchValue}"</div>
                 </div>
               </div>
             )}

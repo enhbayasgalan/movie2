@@ -8,6 +8,7 @@ import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import Moviedetail from "@/components/Moviedetail";
 import { Genre } from "@/components/Genre";
+import { SearchResults } from "@/components/Searchresults";
 
 export default function Home() {
     
@@ -20,8 +21,8 @@ export default function Home() {
       disableTransitionOnChange
     >
       <div className="w-full h-full flex flex-col justify-center items-center">
-        <Header location="Genre"/>
-        <Genre />
+        <Header location="Search"/>
+        <SearchResults />
         <Footer />
       </div>
     </ThemeProvider>

@@ -92,7 +92,7 @@ export const Crad = () => {
             >
      
               <div className="relative">
-                <div className="h-[600px] mt-[59px] mt-[80px]"
+                <div className="lg:h-[600px] h-[300px] mt-[59px] mt-[80px]"
                   onClick={() => handleDetailMovie(movie.id)}>
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
@@ -103,7 +103,7 @@ export const Crad = () => {
                     <div className="flex justify-between lg:flex-col">
                       <div>
                         <h4 className="text-sm">Now Playing:</h4>
-                        <h3 className="w-52 text-2xl font-semibold">
+                        <h3 className="max-w-52 w-full text-2xl font-semibold">
                           {movie.original_title}
                         </h3>
                       </div>

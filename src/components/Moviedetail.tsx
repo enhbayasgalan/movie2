@@ -23,8 +23,7 @@ type gn = {
 };
 type props = {
   movieID: string | string[] | undefined;
-  name: string | string[] | undefined;
-  title: string | string[] | undefined;
+
 };
 type name = {
   cast: Array<nm>;

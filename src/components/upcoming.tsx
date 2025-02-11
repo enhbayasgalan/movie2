@@ -54,28 +54,30 @@ const movies = movie.slice(0, 10)
 const moviesAll = movie
    return (
     <div>
-      <section className="page-primary py-8 lg:py-13 space-y-8">
-        <div className="w-[1280px] flex flex-col justify-center  justify-between ">
+      <section className="py-8 lg:py-13 space-y-8">
+        <div className="max-w-[1280px] w-full flex flex-col justify-center  justify-between ">
           <div className="flex items-center justify-center">
-            <h3 className="text-foreground text-2xl font-semibold w-[1280px]">
+            <h3 className="text-foreground text-2xl font-semibold max-w-[1280px] w-full">
               {props.name}
             </h3>
            {folder == "app" &&( <p className="inline-flex items-center justify-center gap-2 h-9 px-4 py-2 " onClick={()=> router.push(`/seemore/${name}`)}>
               Seemore...
             </p>)}
           </div>
-         { folder == "app" && (<div className="flex grid grid-cols-5 justify-between items-center justify-center py-8 ">
+         { folder == "app" && (<div className="flex flex-wrap gap-8 py-8 ">
             {movie.slice(0, 10).map((movie, index) => (
               <div
-                className="w-[230px] overflow-hidden rounded-lg bg-gray-200 space-y-1 flex items-center mt-[15px] "
+                className="w-[230px] overflow-hidden h-fit relative rounded-md  bg-gray-400/30 space-y-1 flex items-center mt-[15px] "
                 key={index}
+                onClick={() => handleDetailMovie(movie.id)}
               >
-                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px]">
+                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px] group">
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                     className="w-full h-[340px] justify-center "
-                    onClick={() => handleDetailMovie(movie.id)}
+                  
                   />
+                  <div className="absolute inset-0 h-[340px] dark:group-hover:bg-gray-500/30 group-hover:bg-black/20"></div>
                   <div className="p-2 ">
                     <div className="flex items-center gap-x-1 ">
                       <svg
@@ -103,13 +105,13 @@ const moviesAll = movie
               </div>
             ))}
           </div>)}
-          {folder == "seemore" && (<div className="flex grid grid-cols-5 justify-between items-center justify-center py-8 ">
+          {folder == "seemore" && (<div className="flex grid grid-cols-5 justify-between items-center justify-center py-8 gap-8">
             {movie.map((movie, index) => (
               <div
                 className="w-[230px] overflow-hidden rounded-lg space-y-1 flex items-center "
                 key={index}
               >
-                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px] mt-[30px]">
+                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px] mt-[30px] ">
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                     className="w-full h-[340px] justify-center "

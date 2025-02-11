@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { split } from "postcss/lib/list";
 import { useTheme } from "next-themes";
 import { Skeleton } from "@/components/ui/skeleton"
+import { PaginationDemo } from "./Pagination";
 type gen = {
   id: string;
   name: string;
@@ -103,9 +104,6 @@ const {theme} = useTheme()
   }
 console.log("genre id" ,genreID);
 
-
-  
-
   return (
     <div className="pt-[59px]">
       <div className="w-[1280px] pt-[52px] py-8">
@@ -142,7 +140,6 @@ console.log("genre id" ,genreID);
             <h4 className="text-xl font-semibold">
               {movies?.total_results} titles
             </h4>
-            <Skeleton className="h-[125px]  rounded-xl">
             <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8 ">
               {movies?.results?.map((genre: Movie, index) => (
                 <div key={index} className="rounded-lg space-y-1 bg-gray-300 w-[165px]">
@@ -180,7 +177,7 @@ console.log("genre id" ,genreID);
                 </div>
               ))}
             </div>
-            </Skeleton>
+            <PaginationDemo/>
           </div>
         </div>
       </div>
