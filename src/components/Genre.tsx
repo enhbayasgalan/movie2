@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { split } from "postcss/lib/list";
 import { useTheme } from "next-themes";
 import { Skeleton } from "@/components/ui/skeleton"
-import { PaginationDemo } from "./Pagination";
+import { PaginationDynic } from "./Pagination";
 type gen = {
   id: string;
   name: string;
@@ -38,14 +38,14 @@ export const Genre = () => {
     : [];
 const {theme} = useTheme()
   // console.log("genreID", genreID);
-
+  const currentPage = Number(searchParams.get("page")) || 1;
   const genreMovie = async () => {
     try {
       if(genreID){
       const gener = await fetch(
         ` https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID.join(
           ","
-        )}&page=1&api_key=db430a8098715f8fab36009f57dff9fb`
+        )}&page=${currentPage}&api_key=db430a8098715f8fab36009f57dff9fb`
       );
       // console.log("ajillaa");
     
@@ -62,7 +62,7 @@ const {theme} = useTheme()
   };
   useEffect(() => {
     genreMovie();
-  }, [searchParams]);
+  }, [searchParams, currentPage]);
   // console.log(movies);
   const movie = movies?.results;
 
@@ -104,9 +104,12 @@ const {theme} = useTheme()
   }
 console.log("genre id" ,genreID);
 
+
+  
+
   return (
     <div className="pt-[59px]">
-      <div className="w-[1280px] pt-[52px] py-8">
+      <div className="max-w-[1280px] pt-[52px] py-8">
         <h2 className="w-full mb-8 text-2xl font-semibold text-foreground">
           Search Filters
         </h2>
@@ -117,7 +120,7 @@ console.log("genre id" ,genreID);
                 <h3 className="text-2xl font-semibold">Genres</h3>
                 <p className="text-base">See lists of movies by genre</p>
               </div>
-              <div className="flex flex-wrap gap-4 w-[387px]">
+              <div className="flex flex-wrap gap-4 max-w-[387px]">
                 {genre.map((el) => (
                   <div key={el.id}>
                     <button 
@@ -142,14 +145,13 @@ console.log("genre id" ,genreID);
             </h4>
             <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8 ">
               {movies?.results?.map((genre: Movie, index) => (
-                <div key={index} className="rounded-lg space-y-1 bg-gray-300 w-[165px]">
+                <div key={index} className="rounded-lg space-y-1 bg-gray-400/30 w-[165px] group">
                   <img
                     key={genre.id}
                     src={`https://image.tmdb.org/t/p/original/${genre.poster_path}`}
-                    className="w-[165px] h-[244px] "
+                    className="w-[165px] h-[244px]"
                     onClick={()=>handleDetailMovie(genre?.id)}
                   />
-                  
                   <div className="p-2">
                     <div className="flex items-center gap-x-1 ">
                       <svg
@@ -177,7 +179,7 @@ console.log("genre id" ,genreID);
                 </div>
               ))}
             </div>
-            <PaginationDemo/>
+            {movies && (<PaginationDynic total_page={movies?.total_pages}/>)}
           </div>
         </div>
       </div>

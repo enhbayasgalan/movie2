@@ -133,6 +133,8 @@ export const Header = ({location}:props) => {
     router.push(`search/?${params}`)
   }
 
+  
+
   return (
     <header className="fixed top-0 inset-x-0 z-20 h-[59px] bg-background flex items-center justify-center bg-white dark:bg-black">
       <div className="flex items-center justify-between w-full max-w-screen-xl px-5 px-0">

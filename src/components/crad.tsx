@@ -83,7 +83,7 @@ export const Crad = () => {
           </div>
         </div>
       )}
-      <Carousel className="w-full">
+      <Carousel className="max-w-full">
         <CarouselContent>
           {movie.map((movie, index) => (
             <CarouselItem
@@ -135,22 +135,8 @@ export const Crad = () => {
                     <p className="w-[302px] text-sm line-clamp-5">
                       {movie.overview}
                     </p>
-                    <button onClick={() => playTrailer(movie.id)} className="inline-flex items-center justify-center gap-2  rounded-md  font-medium h-9 px-4 py-2  bg-white w-[144px] ">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M3.33301 2L12.6663 8L3.33301 14V2Z"
-                          stroke="#18181B"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      <h4 className="text-sm z-10  text-black">Watch Trailer</h4>
+                    <button onClick={() => playTrailer(movie.id)} className="inline-flex items-center justify-center gap-2  rounded-md  font-medium h-9 px-4 py-2  bg-white w-[144px]">
+                      <h4 className="text-sm z-10  text-black ">Watch Trailer</h4>
                     </button>
                   </div>
                 </div>

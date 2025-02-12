@@ -105,7 +105,7 @@ const moviesAll = movie
               </div>
             ))}
           </div>)}
-          {folder == "seemore" && (<div className="flex grid grid-cols-5 justify-between items-center justify-center py-8 gap-8">
+          {folder == "seemore" && (<div className="flex grid grid-cols-5 justify-between items-center justify-center py-8 gap-8 ">
             {movie.map((movie, index) => (
               <div
                 className="w-[230px] overflow-hidden rounded-lg space-y-1 flex items-center "
@@ -117,7 +117,7 @@ const moviesAll = movie
                     className="w-full h-[340px] justify-center "
                     onClick={() => handleDetailMovie(movie.id)}
                   />
-                  <div className="h-[90px] w-full bg-gray-200 ">
+                  <div className="h-[90px] w-full bg-gray-400/30 ">
                     <p className="text-foreground text-sm flex">
                       <svg
                         width="16"

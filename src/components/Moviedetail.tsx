@@ -270,11 +270,11 @@ const Moviedetail = ({ movieID }: props) => {
             </div>
             <div  className="flex flex-wrap gap-5 lg:gap-8 grid grid-cols-5 ">
               {similar.slice(0, 5).map((movie: similar, index: number) => (
-                <div className="rounded-lg bg-gray-200 w-[190px] space-y-1">
+                <div className="rounded-lg bg-gray-400/30 w-[190px] space-y-1">
                   <div>
                     <img
                       src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                      className=" w-[190px] h-[281px]"
+                      className=" w-[190px] h-[281px] bg-gray-400/30"
                       key={index}
                       onClick={() => handleDetailMovie(movie.id)}
                     />
