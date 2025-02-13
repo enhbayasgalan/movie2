@@ -91,14 +91,15 @@ export const Crad = () => {
             
             >
      
-              <div className="relative">
-                <div className="lg:h-[600px] h-[300px] mt-[59px] mt-[80px]"
+              <div className="relative h-[600px]">
+                <div className="lg:h-[600px] h-[300px] mt-[59px] mt-[80px] w-full h-full"
                   onClick={() => handleDetailMovie(movie.id)}>
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                    className="w-full sm:h-auto h-full min-h-[300px] min-w-[270px]"
                   />
                 </div>
-                <div className="static text-foreground lg:absolute lg:left-[140px] lg:translate-y-2 lg:text-white z-10 top-[20px] mt-[200px]">
+                <div className="text-foreground lg:absolute lg:left-[140px] lg:translate-y-2 lg:text-white z-10 lg:top-[20px] lg:mt-[200px]">
                   <div className="p-5 space-y-4 lg:p-0">
                     <div className="flex justify-between lg:flex-col">
                       <div>
@@ -135,8 +136,8 @@ export const Crad = () => {
                     <p className="w-[302px] text-sm line-clamp-5">
                       {movie.overview}
                     </p>
-                    <button onClick={() => playTrailer(movie.id)} className="inline-flex items-center justify-center gap-2  rounded-md  font-medium h-9 px-4 py-2  bg-white w-[144px]">
-                      <h4 className="text-sm z-10  text-black ">Watch Trailer</h4>
+                    <button onClick={() => playTrailer(movie.id)} className="inline-flex items-center justify-center gap-2  rounded-md  font-medium h-9 px-4 py-2 w-[144px]">
+                      <h4 className="text-sm z-10  text-black bg-gray-400/40 absolute rounded-md px-5 py-2 z-40 bg-dark dark:text-white">Watch Trailer</h4>
                     </button>
                   </div>
                 </div>
@@ -144,8 +145,8 @@ export const Crad = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="lg:absolute hidden" />
+        <CarouselNext className="lg:absolute hidden" />
       </Carousel>
     </div>
     

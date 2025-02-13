@@ -47,7 +47,7 @@ export const Header = ({location}:props) => {
     ? searchParams.get("genreid")?.split(",")
     : [];
   // console.log("movie", movie);
-  const getMovieGenres = async () => {
+  const getMovieGenres = async () => {  
     const response = await fetch(
       `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=db430a8098715f8fab36009f57dff9fb`
     );
@@ -155,18 +155,17 @@ export const Header = ({location}:props) => {
             Movie Z
           </h4>
         </div>
-        <div className="relative  flex items-center gap-x-3">
+        <div className="lg:relative hidden flex items-center gap-x-3">
           <button
             onClick={() => buttonVariants()}
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 w-[97px] "
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 lg:w-[97px]"
           >
-            <div></div>
             Genre
           </button>
           {alert == true && (
-            <div className="z-50 min-w-[8rem] overflow-hidden absolute top-10 rounded-md border bg-white dark:bg-black p-5 w-[557px] h-[340px]">
+            <div className="z-50  overflow-hidden absolute top-10 rounded-md border bg-white dark:bg-black p-5 max-w-[557px] max-h-[340px]">
               <div className="text-foreground space-y-1">
-                <h3 className="text-2xl font-semibold">Genres</h3>
+                <button className="text-2xl font-semibold w-[97px]">Genres</button>
                 <p className="text-base">See lists of movies by genre </p>
               </div>
               <div className="bg-border h-[1px] w-full border mt-[16px]"></div>
@@ -229,7 +228,7 @@ export const Header = ({location}:props) => {
                             onClick={() => handleDetailMovie(movie.id)}
                           />
                           <div className="flex-1 text-foreground">
-                            <h4 className="w-48 lg:w-96 text-xl font-semibold truncate mt-[10px]">
+                            <h4 className="lg:w-96 text-xl font-semibold  mt-[10px]">
                               {movie.original_title}
                             </h4>
                             <div className="flex items-center gap-x-1">

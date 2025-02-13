@@ -145,7 +145,7 @@ console.log("genre id" ,genreID);
             </h4>
             <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8 ">
               {movies?.results?.map((genre: Movie, index) => (
-                <div key={index} className="rounded-lg space-y-1 bg-gray-400/30 w-[165px] group">
+                <div key={index} className="rounded-lg space-y-1 bg-gray-400/30 w-[165px]">
                   <img
                     key={genre.id}
                     src={`https://image.tmdb.org/t/p/original/${genre.poster_path}`}

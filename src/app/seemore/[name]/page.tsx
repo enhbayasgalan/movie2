@@ -35,7 +35,7 @@ const {name} = useParams()
       disableTransitionOnChange
     >
       <div className="w-full h-full flex flex-col justify-center items-center">
-        <Header />
+        <Header location="Seemore"/>
         <div className="w-screen h-[60px]"></div>
         <Upcoming name={name} title={name} />
 

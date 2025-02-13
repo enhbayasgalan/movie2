@@ -5,12 +5,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Home from "@/app/page";
-
+import { PaginationDynic } from "./Pagination";
 interface e {
   poster_path: string;
   vote_average: number;
   original_title: string;
   id: number
+  total_pages: number;
 }
 type props = {
   name: string | string[] | undefined;
@@ -52,29 +53,31 @@ console.log(folder);
 const name = props.title
 const movies = movie.slice(0, 10)
 const moviesAll = movie
+
+
    return (
     <div>
-      <section className="py-8 lg:py-13 space-y-8">
-        <div className="max-w-[1280px] w-full flex flex-col justify-center  justify-between ">
+      <section className="py-8 top-10 lg:py-13 space-y-8">
+        <div className="max-w-[1280px] w-full flex flex-col justify-center justify-between ">
           <div className="flex items-center justify-center">
-            <h3 className="text-foreground text-2xl font-semibold max-w-[1280px] w-full">
+            <h3 className="text-foreground text-2xl font-semibold lg:w-[1280px] w-full px-4 h-9">
               {props.name}
             </h3>
            {folder == "app" &&( <p className="inline-flex items-center justify-center gap-2 h-9 px-4 py-2 " onClick={()=> router.push(`/seemore/${name}`)}>
               Seemore...
             </p>)}
           </div>
-         { folder == "app" && (<div className="flex flex-wrap gap-8 py-8 ">
+         { folder == "app" && (<div className="flex flex-wrap gap-5 lg:gap-8 py-8 px-4 lg:px-0">
             {movie.slice(0, 10).map((movie, index) => (
               <div
-                className="w-[230px] overflow-hidden h-fit relative rounded-md  bg-gray-400/30 space-y-1 flex items-center mt-[15px] "
+                className="lg:w-[230px] w-[157.5px] overflow-hidden h-fit relative rounded-md  bg-gray-400/30 space-y-1 flex items-center mt-[15px] "
                 key={index}
                 onClick={() => handleDetailMovie(movie.id)}
               >
-                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px] group">
+                <div className="overflow-hidden flex flex-col justify-center max-w-full h- [400px] group">
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                    className="w-full h-[340px] justify-center "
+                    className="w-full h-auto justify-center "
                   
                   />
                   <div className="absolute inset-0 h-[340px] dark:group-hover:bg-gray-500/30 group-hover:bg-black/20"></div>
@@ -105,19 +108,18 @@ const moviesAll = movie
               </div>
             ))}
           </div>)}
-          {folder == "seemore" && (<div className="flex grid grid-cols-5 justify-between items-center justify-center py-8 gap-8 ">
+          {folder == "seemore" && (<div className="flex flex-wrap px-4 lg:px-0 items-center justify-center py-8 gap-8  ">
             {movie.map((movie, index) => (
               <div
-                className="w-[230px] overflow-hidden rounded-lg space-y-1 flex items-center "
-                key={index}
-              >
-                <div className="overflow-hidden flex flex-col justify-center w-full h -[400px] mt-[30px] ">
+                className="lg:w-[230px] w-[157.5px]  overflow-hidden rounded-lg space-y-1 flex items-center "
+                key={index}              >
+                <div className="overflow-hidden rounded-lg flex flex-col justify-center max-w-full h -[400px] mt-[30px] ">
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                    className="w-full h-[340px] justify-center "
+                    className="max-w-full h-auto justify-center rounded-lg"
                     onClick={() => handleDetailMovie(movie.id)}
                   />
-                  <div className="h-[90px] w-full bg-gray-400/30 ">
+                  <div className="max-h-[90px] max-w-full bg-gray-400/30 ">
                     <p className="text-foreground text-sm flex">
                       <svg
                         width="16"
