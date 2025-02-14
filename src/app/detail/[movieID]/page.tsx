@@ -4,11 +4,13 @@ import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import Moviedetail from "@/components/Moviedetail";
 import { useParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function Home() {
     const {movieID} = useParams()
     
   return (
+    <Suspense>
     <ThemeProvider
       attribute="class"
       defaultTheme="system"
@@ -21,5 +23,6 @@ export default function Home() {
         <Footer />
       </div>
     </ThemeProvider>
+    </Suspense>
   );
 }

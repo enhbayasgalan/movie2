@@ -6,6 +6,7 @@ import { Upcoming } from "@/components/upcoming";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function Home() {
 const {name} = useParams()
@@ -14,6 +15,7 @@ if(name){
 
 
   return (
+    <Suspense>
     <ThemeProvider
       attribute="class"
       defaultTheme="system"
@@ -29,5 +31,6 @@ if(name){
         <Footer />
       </div>
     </ThemeProvider>
+    </Suspense>
   );
 }}

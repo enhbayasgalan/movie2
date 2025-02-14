@@ -3,7 +3,7 @@ import Header from "@/components/header";
 
 import { Crad } from "@/components/crad";
 import { Upcoming } from "@/components/upcoming";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useState } from "react";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -27,6 +27,7 @@ export default function Home() {
   console.log(movie);
 
   return (
+    <Suspense>
     <ThemeProvider
       attribute="class"
       defaultTheme="system"
@@ -45,5 +46,6 @@ export default function Home() {
         <Footer />
       </div>
     </ThemeProvider>
+    </Suspense>
   );
 }
