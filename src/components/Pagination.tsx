@@ -35,7 +35,7 @@ export const PaginationDynic = ({ total_page }: { total_page: number }) => {
   };
 
   return (
-    <Pagination className="my-4">
+    <Pagination className="my-4 text-sm sm:text-md w-full">
       <PaginationContent>
         {currentPage > 1 && (
           <PaginationItem>
@@ -73,7 +73,7 @@ export const PaginationDynic = ({ total_page }: { total_page: number }) => {
           </PaginationItem>
         )}
         {totalPage > currentPage && (
-          <PaginationItem>
+          <PaginationItem className="hidden sm:block">
             <PaginationLink onClick={() => handlePageChange(totalPage)}>
               {totalPage}
             </PaginationLink>

@@ -34,7 +34,7 @@ export default function Home() {
       disableTransitionOnChange
     >
       <div className="w-full h-full flex flex-col justify-center items-center">
-        <Header />
+        <Header location="Home"/>
 
         <Crad />
 

@@ -8,7 +8,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useState } from "react";
-import { resourceLimits } from "worker_threads";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -59,7 +58,7 @@ export const Crad = () => {
         const trailer = await video.json()
       setTrailer(trailer.results[0].key);
     }catch(error){
-      console.error();
+      console.log(error);
     }finally{
       setTrailerLoading(false)
     }
@@ -92,11 +91,11 @@ export const Crad = () => {
             >
      
               <div className="relative h-[600px]">
-                <div className="lg:h-[600px] h-[300px] mt-[59px] mt-[80px] w-full h-full"
+                <div className="mt-[59px] mt-[80px] overflow-hidden w-full h-1/2 lg:h-full"
                   onClick={() => handleDetailMovie(movie.id)}>
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                    className="w-full sm:h-auto h-full min-h-[300px] min-w-[270px]"
+                    className="w-full sm:h-auto "
                   />
                 </div>
                 <div className="text-foreground lg:absolute lg:left-[140px] lg:translate-y-2 lg:text-white z-10 lg:top-[20px] lg:mt-[200px]">

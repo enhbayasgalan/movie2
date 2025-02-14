@@ -1,18 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "./theme-provider";
+
 import { useTheme } from "next-themes";
 import { useRouter, useSearchParams } from "next/navigation";
-import { log } from "console";
-import { Divide, Moon, Search, Sun } from "lucide-react";
+
+import { Moon, SearchIcon, Sun } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -43,6 +39,7 @@ export const Header = ({location}:props) => {
   const [alert, setAlert] = useState(false);
   const [movie, setMovies] = useState<data[]>([]);
   const searchParams = useSearchParams();
+  const [searchBar, setSearchbar] = useState(false)
   const genreID = searchParams.get("genreid")
     ? searchParams.get("genreid")?.split(",")
     : [];
@@ -91,7 +88,7 @@ export const Header = ({location}:props) => {
   };
 
   const onSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
+    {location !== "Search" && setSearch(event.target.value)};
     const params = new URLSearchParams(searchParams.toString());
     params.set("value", event.target.value)
 {location == "Search" && router.push(`/search/?${params}`)}
@@ -112,7 +109,7 @@ export const Header = ({location}:props) => {
   const genreOpen = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
     const index = genreID?.indexOf(id.toString())
-    if (genreID?.includes(id.toString())){
+    if (genreID?.includes(id.toString()) && index){
       genreID.splice(index, index+1)
     }else{
       genreID?.push(id);
@@ -155,15 +152,16 @@ export const Header = ({location}:props) => {
             Movie Z
           </h4>
         </div>
-        <div className="lg:relative hidden flex items-center gap-x-3">
+        <div className={`${searchBar == false ? "hidden  lg:flex duration-700 -translate-y-12 lg:translate-y-0" : "duration-700 flex lg:static absolute translate-y-0"}  bg-black   items-center gap-x-3 `}>
           <button
             onClick={() => buttonVariants()}
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 lg:w-[97px]"
           >
-            Genre
+            <p className="hidden lg:block">Genre</p>
+          
           </button>
           {alert == true && (
-            <div className="z-50  overflow-hidden absolute top-10 rounded-md border bg-white dark:bg-black p-5 max-w-[557px] max-h-[340px]">
+            <div className="  overflow-hidden absolute top-10 rounded-md border bg-white dark:bg-black p-5 lg:w-[557px] sm:w-[400px] w-[300px] ">
               <div className="text-foreground space-y-1">
                 <button className="text-2xl font-semibold w-[97px]">Genres</button>
                 <p className="text-base">See lists of movies by genre </p>
@@ -199,26 +197,26 @@ export const Header = ({location}:props) => {
             </div>
           )}
           <div>
-            <div className="relative text-muted-foreground w-[379px]">
+            <div className=" relative w-[180px] lg:w-[360px] ">
            {location !== "Search" && (<input
                 type="text"
                 placeholder="search..." 
-                className="flex h-9 w-full rounded-md border px-3 px-1 pl-[38px]"
+                className="flex h-9  w-full rounded-md border px-3 px-1 pl-[38px]"
                 onChange={onSearchValue}
                 value={searchValue}
               />)}
               {location == "Search" &&  (<input
                 type="text"
                 placeholder="search..." 
-                className="flex h-9 w-full rounded-md border px-3 px-1 pl-[38px]"
+                className="flex h-9 lg:w-full w-1/2 rounded-md border px-3 px-1 pl-[38px]"
                 onChange={onSearchValue}
                 value={searchValueParams || ""}
               />)}
             </div>
             {searchValue.length !== 0 && (
-              <div className="rounded-xl border bg-white dark:bg-black p-3 h-[720px] text-card-foreground absolute w-[500px] ">
-                <div className="flex gap-x-4 p-2 rounded-md">
-                  <div  className="relative  w-[67px] h-[100px] rounded-md">
+              <div className="rounded-xl border bg-white dark:bg-black p-3 h-[720px] text-card-foreground absolute overflow-scroll lg:w-[500px] sm:-left-0 -left-[10px] sm:w-[400px] w-[335px]">
+                <div className="flex flex-col gap-x-4 p-2 rounded-md">
+                  <div  className="relative  w-[67px] h-fit rounded-md">
                     {movie.slice(0, 5).map((movie: data, index) => (
                       <div key={index}>
                         <div  className="flex gap-x-4 gap-2 ">
@@ -253,20 +251,23 @@ export const Header = ({location}:props) => {
                               </div>
                             </div>
                             <div className="mt-3 flex justify-between text-sm font-medium">
-                              <h5>{movie.release_date}</h5>
+                              <h5>{(movie.release_date).split("-")[0]}</h5>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <div onClick={()=> handleSearchResults()} className="py-4 py-2.5 text-sm font-medium text-foreground mt-[656px] ">See all results for "{searchValue}"</div>
+                  <div onClick={()=> handleSearchResults()} className="py-4 py-2.5 text-sm font-medium text-foreground">See all results for "{searchValue}"</div>
                 </div>
               </div>
             )}
           </div>
         </div>
         <div className="flex items-center gap-x-3">
+          <div className="">
+            <SearchIcon onClick={()=>setSearchbar((prev)=>!prev)} className="lg:hidden block"/>
+          </div>
         <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button size="icon" onClick={onClick}>

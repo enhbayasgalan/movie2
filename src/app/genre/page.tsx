@@ -1,12 +1,8 @@
 "use client";
 import Header from "@/components/header";
 
-
-import { useEffect } from "react";
-import { useState } from "react";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
-import Moviedetail from "@/components/Moviedetail";
 import { Genre } from "@/components/Genre";
 
 export default function Home() {

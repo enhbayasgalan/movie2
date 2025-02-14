@@ -1,12 +1,9 @@
 "use client";
 
-import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
-import { Ripple } from 'react-css-spinners'
 import { useRouter, useSearchParams } from "next/navigation";
-import { split } from "postcss/lib/list";
 import { useTheme } from "next-themes";
-import { Skeleton } from "@/components/ui/skeleton"
+
 type gen = {
   id: string;
   name: string;
@@ -57,7 +54,7 @@ export  const SearchResults = () => {
         // console.log(result);
       }
       } catch (error) {
-        console.error();
+        console.log(error);
       } finally {
       }
     };
@@ -71,7 +68,7 @@ export  const SearchResults = () => {
       const params = new URLSearchParams(searchParams.toString());
   
       const index = genreID?.indexOf(id.toString())
-      if (genreID?.includes(id.toString())){
+      if (genreID?.includes(id.toString())&& index){
         genreID.splice(index, index+1)
       }else{
         genreID?.push(id);
@@ -110,7 +107,7 @@ export  const SearchResults = () => {
       <div className="w-[1280px] pt-[52px] py-8">
     
         <h2 className="w-full mb-8 text-2xl font-semibold text-foreground">
-          Search Filters
+         Search results
         </h2>
         <div className="flex">
         <div className="flex-1 pr-12">
@@ -159,7 +156,7 @@ export  const SearchResults = () => {
           <div className="w-fit top-[111px]">
             <div className="space-y-5">
               <div className="">
-                <h3 className="text-2xl font-semibold">Genres</h3>
+                <h3 className="text-2xl font-semibold">Search by genre</h3>
                 <p className="text-base">See lists of movies by genre</p>
               </div>
               <div className="flex flex-wrap gap-4 w-[387px]">

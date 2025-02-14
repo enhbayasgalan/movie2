@@ -1,11 +1,12 @@
 "use client";
 
-import { title } from "process";
+
 import { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Home from "@/app/page";
+
 import { PaginationDynic } from "./Pagination";
+import { useSearchParams } from "next/navigation";
 interface e {
   poster_path: string;
   vote_average: number;
@@ -14,21 +15,42 @@ interface e {
   total_pages: number;
 }
 type props = {
-  name: string | string[] | undefined;
-  title: string | string[] | undefined;
+  name: string | string[]  ,
+  title: string  | string[]
 };
+type Response = {
+  results : Array<e>,
+  total_pages : number
+}
+type el = {
+
+}
 export const Upcoming = (props: props) => {
-  const [movie, setMovies] = useState<e[]>([]);
+  const [movie, setMovies] = useState<Response | null>(null);
   const [folder, setFolder] =useState("")
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const nameValue = Array.isArray(props.name) ? props.name[0] : props.name;
   const MovieData = async () => {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${props.title}?language=en-US&page=1&api_key=db430a8098715f8fab36009f57dff9fb`
+      `https://api.themoviedb.org/3/movie/${props.title}?language=en-US&page=${currentPage}&api_key=db430a8098715f8fab36009f57dff9fb`
     );
+ 
     const result = await response.json();
-    const movie = result.results;
-    setMovies(movie);
+   setMovies(result);
   };
+  const SimilarMovie = async() => {
+    try{
+      const responseSimilar = await fetch (`https://api.themoviedb.org/3/movie/${props.title}/similar?language=en-US&page=${currentPage}&api_key=db430a8098715f8fab36009f57dff9fb`)
+      const resultSimilar = await responseSimilar.json()
+      setMovies(resultSimilar)
+    }catch(err){
+      console.log(err);
+      
+    }
+
+  }
 const folderset = () => {
   const path = window.location.pathname
   if (path.split("/").includes("seemore")){ 
@@ -41,9 +63,11 @@ console.log(path);
 
 }
   useEffect(() => {
-    MovieData();
+  
+   {parseInt(nameValue)/1==parseInt(nameValue) == true ? SimilarMovie() : MovieData();}
     folderset()
-  }, []);
+    
+  }, [currentPage]);
 console.log(folder);
 
   console.log(movie);
@@ -51,16 +75,14 @@ console.log(folder);
     router.push(`/detail/${movieID}`)
      }
 const name = props.title
-const movies = movie.slice(0, 10)
-const moviesAll = movie
-
+const movies = movie?.results
 
    return (
     <div>
       <section className="py-8 top-10 lg:py-13 space-y-8">
         <div className="max-w-[1280px] w-full flex flex-col justify-center justify-between ">
           <div className="flex items-center justify-center">
-            <h3 className="text-foreground text-2xl font-semibold lg:w-[1280px] w-full px-4 h-9">
+            <h3 className="text-foreground text-2xl font-semibold w-full px-4 h-9">
               {props.name}
             </h3>
            {folder == "app" &&( <p className="inline-flex items-center justify-center gap-2 h-9 px-4 py-2 " onClick={()=> router.push(`/seemore/${name}`)}>
@@ -68,7 +90,7 @@ const moviesAll = movie
             </p>)}
           </div>
          { folder == "app" && (<div className="flex flex-wrap gap-5 lg:gap-8 py-8 px-4 lg:px-0">
-            {movie.slice(0, 10).map((movie, index) => (
+            {movies?.slice(0, 10).map((movie:e, index) => (
               <div
                 className="lg:w-[230px] w-[157.5px] overflow-hidden h-fit relative rounded-md  bg-gray-400/30 space-y-1 flex items-center mt-[15px] "
                 key={index}
@@ -109,7 +131,7 @@ const moviesAll = movie
             ))}
           </div>)}
           {folder == "seemore" && (<div className="flex flex-wrap px-4 lg:px-0 items-center justify-center py-8 gap-8  ">
-            {movie.map((movie, index) => (
+            {movie?.results.map((movie, index) => (
               <div
                 className="lg:w-[230px] w-[157.5px]  overflow-hidden rounded-lg space-y-1 flex items-center "
                 key={index}              >
@@ -119,7 +141,7 @@ const moviesAll = movie
                     className="max-w-full h-auto justify-center rounded-lg"
                     onClick={() => handleDetailMovie(movie.id)}
                   />
-                  <div className="max-h-[90px] max-w-full bg-gray-400/30 ">
+                  <div className="h-[90px] max-w-full bg-gray-400/30 ">
                     <p className="text-foreground text-sm flex">
                       <svg
                         width="16"
@@ -140,8 +162,9 @@ const moviesAll = movie
                   </div>
                 </div>
               </div>
-            ))}
+            ))}    {movies && (<PaginationDynic total_page={movie?.total_pages}/>)}
           </div>)}
+    
         </div>
       </section>
     </div>

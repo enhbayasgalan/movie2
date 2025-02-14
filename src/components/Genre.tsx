@@ -1,12 +1,12 @@
 "use client";
 
-import { useQueryState } from "nuqs";
+
 import { useEffect, useState } from "react";
-import { Ripple } from 'react-css-spinners'
+
 import { useRouter, useSearchParams } from "next/navigation";
-import { split } from "postcss/lib/list";
+
 import { useTheme } from "next-themes";
-import { Skeleton } from "@/components/ui/skeleton"
+
 import { PaginationDynic } from "./Pagination";
 type gen = {
   id: string;
@@ -56,7 +56,7 @@ const {theme} = useTheme()
       // console.log(result);
     }
     } catch (error) {
-      console.error();
+      console.log(error);
     } finally {
     }
   };
@@ -70,7 +70,7 @@ const {theme} = useTheme()
     const params = new URLSearchParams(searchParams.toString());
 
     const index = genreID?.indexOf(id.toString())
-    if (genreID?.includes(id.toString())){
+    if (genreID?.includes(id.toString()) && index){
       genreID.splice(index, index+1)
     }else{
       genreID?.push(id);
@@ -108,19 +108,19 @@ console.log("genre id" ,genreID);
   
 
   return (
-    <div className="pt-[59px]">
+    <div className="pt-[59px] pl-8 lg:pl-0">
       <div className="max-w-[1280px] pt-[52px] py-8">
         <h2 className="w-full mb-8 text-2xl font-semibold text-foreground">
           Search Filters
         </h2>
-        <div className="flex">
+        <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 ">
           <div className="w-fit top-[111px]">
             <div className="space-y-5">
               <div className="">
                 <h3 className="text-2xl font-semibold">Genres</h3>
                 <p className="text-base">See lists of movies by genre</p>
               </div>
-              <div className="flex flex-wrap gap-4 max-w-[387px]">
+              <div className="flex flex-wrap gap-4 w-full lg:w-[387px]">
                 {genre.map((el) => (
                   <div key={el.id}>
                     <button 
@@ -138,7 +138,7 @@ console.log("genre id" ,genreID);
               </div>
             </div>
           </div>
-          <div className="bg-border w-[1px] border h-screen mx-4"></div>
+          <div className="bg-border lg:w-[1px] border w-full lg:h-screen  mx-4"></div>
           <div className="flex-1 pr-12">
             <h4 className="text-xl font-semibold">
               {movies?.total_results} titles

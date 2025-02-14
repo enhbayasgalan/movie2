@@ -1,7 +1,7 @@
 "use client";
 
-import { log } from "console";
-import { use, useState } from "react";
+
+import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -77,7 +77,7 @@ const Moviedetail = ({ movieID }: props) => {
       setSimilar(similar2.results);
       setLoading(false);
     } catch (error) {
-      console.error();
+      console.log(error);
     }
   };
 
@@ -101,17 +101,17 @@ const Moviedetail = ({ movieID }: props) => {
           onClick={() => setDisplay(false)}
           className=" w-screen h-screen flex items-center justify-center bg-black/80 fixed inset-0 z-50 "
         >
-          <div className="w-[512px] h-[280px] ">
+         
             <iframe
               src={`https://www.youtube.com/embed/${trailer}`}
-              className="w-[512px] h-[280px]"
+              className="max-w-[512px] w-full h-[280px]"
             ></iframe>
-          </div>
+          
         </div>
       )}
-      <div className="w-screen flex flex-col items-center">
+      <div className="max-w-[1080px] w-full flex flex-col items-center">
         {isLoading == false ? (
-          <div className="mt-8 mb-4 w-[1080px] px-5 flex justify-between lg:mt-[52px] lg:mb-6 lg:px-0 py-8">
+          <div className="mt-8 mb-4 max-w-[1080px] w-full px-5 flex justify-between lg:mt-[52px] lg:mb-6 lg:px-0 py-8">
             <div className="">
               <h1 className="break-words text-2xl font-bold w-52 lg:w-fit lg:text-4xl">
                 {movie?.title}
@@ -150,8 +150,9 @@ const Moviedetail = ({ movieID }: props) => {
             </div>
           </div>
         ) : null}
-        <div className=" flex gap-x-8 mb-8">
-          <div className="overflow-hidden relative w-[290px] h-[428px] rounded">
+        <div >
+        <div className="flex gap-x-8 mb-8 ">
+          <div className="overflow-hidden hidden lg:block w-[290px] h-[428px] rounded ">
             <img
               src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`}
             />
@@ -159,12 +160,12 @@ const Moviedetail = ({ movieID }: props) => {
 
           <div className="relative">
             <div className="absolute inset-0 z-10 bg-black/40"></div>
-            <div className="relative overflow-hidden w-[375px] lg:w-[760px] h-[211px] lg:h-[428px] lg:rounded">
+            <div className="relative overflow-hidden w-[375px] lg:w-[760px] h-[211px] lg:h-[428px] lg:rounded-md ">
               <img
                 src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`}
               />
             </div>
-            <div className="absolute left-6 bottom-6 z-20">
+            <div className="absolute left-6 bottom-6 z-10">
               <div className="flex items-center text-white space-x-3">
                 <button
                   onClick={() => setDisplay(true)}
@@ -188,10 +189,19 @@ const Moviedetail = ({ movieID }: props) => {
             </div>
           </div>
         </div>
+        </div>
         <div className="px-5 lg:px-0">
-          <div className="flex gap-x-[34px]">
+          <div className="flex gap-4">
+        <div className="overflow-hidden relative lg:hidden w-[100px] h-[150px] rounded ">
+            <img
+              src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`}
+              className="w-full h-full"
+            />
+          </div>
+          
+          <div className="flex w-full gap-x-[34px] ">
             <div className="space-y-5 mb-5">
-              <div className="flex flex-wrap gap-3 w-[1080px]">
+              <div className="flex flex-wrap gap-3 w-full">
                 {genres?.map((genre: gn) => (
                   <div
                     key={genre.id}
@@ -201,9 +211,9 @@ const Moviedetail = ({ movieID }: props) => {
                   </div>
                 ))}
               </div>
-              <p className="text-base w-[1080px]">{movie?.overview}</p>
+              <p className="text-base w-full">{movie?.overview}</p>
             </div>
-          </div>
+          </div></div>
           <div className="space-y-5 text-foreground mb-8">
             <div className="space-y-1">
               <div className="flex pb-1">
@@ -252,7 +262,7 @@ const Moviedetail = ({ movieID }: props) => {
           <div className="pb-8 lg:pb-[112.62px]">
             <div className="flex justify-between mb-8">
               <h3 className="text-2xl font-semibold">More like this</h3>
-              <div className="inline-flex items-center justify-center gap-2 underline-offset-4 h-9 px-4 py-2" onClick={()=> router.push(`/seemore/${name}`)}>
+              <div className="inline-flex items-center justify-center gap-2 underline-offset-4 h-9 px-4 py-2" onClick={()=> router.push(`/seemore/${movieID}`)}>
                 See more
                 <svg
                   width="16"
@@ -268,9 +278,9 @@ const Moviedetail = ({ movieID }: props) => {
                 </svg>
               </div>
             </div>
-            <div  className="flex flex-wrap gap-5 lg:gap-8 grid grid-cols-5 ">
+            <div  className="flex flex-wrap gap-5 lg:gap-8 ">
               {similar.slice(0, 5).map((movie: similar, index: number) => (
-                <div className="rounded-lg bg-gray-400/30 w-[190px] space-y-1">
+                <div className="rounded-lg bg-gray-400/30 relative sm:w-[190px] w-[140px] space-y-1">
                   <div>
                     <img
                       src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
