@@ -152,10 +152,10 @@ export const Header = ({location}:props) => {
             Movie Z
           </h4>
         </div>
-        <div className={`${searchBar == false ? "hidden  lg:flex duration-700 -translate-y-12 lg:translate-y-0" : "duration-700 flex lg:static absolute translate-y-0"}  bg-black   items-center gap-x-3 `}>
+        <div className={`${searchBar == false ? "hidden  lg:flex duration-700 -translate-y-12 lg:translate-y-0" : "duration-700 flex lg:static absolute translate-y-0"}  dark:bg-black bg-white  items-center gap-x-3 `}>
           <button
             onClick={() => buttonVariants()}
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 lg:w-[97px]"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border h-9 px-4 py-2 lg:w-[97px] "
           >
             <p className="hidden lg:block">Genre</p>
           
