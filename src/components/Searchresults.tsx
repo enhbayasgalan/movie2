@@ -110,13 +110,13 @@ export  const SearchResults = () => {
          Search results
         </h2>
         <div className="flex">
-        <div className="flex-1 pr-12">
+        <div className="flex-1 lg:pr-12">
             <h4 className="text-xl font-semibold">
               {movies?.total_results} titles
             </h4>
             <div className="flex flex-wrap gap-5 lg:gap-x-12 lg:gap-y-8 py-8 ">
               {movies?.results?.map((genre: Movie, index) => (
-                <div key={index} className="rounded-lg space-y-1 bg-gray-300 w-[165px]">
+                <div key={index} className="rounded-lg space-y-1 bg-gray-400/30 lg:w-[165px]">
                   <img
                     key={genre.id}
                     src={`https://image.tmdb.org/t/p/original/${genre.poster_path}`}
@@ -153,7 +153,7 @@ export  const SearchResults = () => {
             </div>
           </div>
           <div className="bg-border w-[1px] border h-screen mx-4"></div>
-          <div className="w-fit top-[111px]">
+          <div className="w-fit lg:top-[111px] static h-fit">
             <div className="space-y-5">
               <div className="">
                 <h3 className="text-2xl font-semibold">Search by genre</h3>

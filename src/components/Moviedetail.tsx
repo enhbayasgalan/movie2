@@ -278,9 +278,9 @@ const Moviedetail = ({ movieID }: props) => {
                 </svg>
               </div>
             </div>
-            <div  className="flex flex-wrap gap-5 lg:gap-8 ">
+            <div className="flex flex-wrap gap-5 lg:gap-8 ">
               {similar.slice(0, 5).map((movie: similar, index: number) => (
-                <div className="rounded-lg bg-gray-400/30 relative sm:w-[190px] w-[140px] space-y-1">
+                <div key={index} className="rounded-lg bg-gray-400/30 relative sm:w-[190px] w-[140px] space-y-1">
                   <div>
                     <img
                       src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}

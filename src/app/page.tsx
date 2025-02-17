@@ -28,24 +28,24 @@ export default function Home() {
 
   return (
     <Suspense>
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <div className="w-full h-full flex flex-col justify-center items-center">
-        <Header location="Home"/>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <div className="w-full h-full flex flex-col justify-center items-center">
+          <Header location="Home" />
 
-        <Crad />
+          <Crad />
 
-        <Upcoming name={"Upcoming"} title={"upcoming"} />
-        <Upcoming name={"Popular"} title={"popular"} />
-        <Upcoming name={"Top Rated"} title={"top_rated"} />
+          <Upcoming name={"Upcoming"} title={"upcoming"} />
+          <Upcoming name={"Popular"} title={"popular"} />
+          <Upcoming name={"Top Rated"} title={"top_rated"} />
 
-        <Footer />
-      </div>
-    </ThemeProvider>
+          <Footer />
+        </div>
+      </ThemeProvider>
     </Suspense>
   );
 }
